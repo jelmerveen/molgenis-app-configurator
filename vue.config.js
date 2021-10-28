@@ -1,10 +1,12 @@
 const ZipPlugin = require('zip-webpack-plugin')
 const packageJson = require('./package.json')
 const GenerateJsonWebpackPlugin = require('generate-json-webpack-plugin')
+const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
+
 const pkgVersion = packageJson.version
 const pkgName = packageJson.name
 
-const PROXY_TARGET = 'https://bbmri-acc.gcc.rug.nl' // 'https://master.dev.molgenis.org'
+const PROXY_TARGET = 'https://jelmer.gcc.rug.nl' // 'https://master.dev.molgenis.org'
 
 module.exports = {
   runtimeCompiler: true,
@@ -17,6 +19,9 @@ module.exports = {
   },
   configureWebpack: config => {
     config.plugins.push(
+      new MonacoEditorPlugin({
+        languages: ['json']
+      }),
       new GenerateJsonWebpackPlugin('config.json', {
         name: packageJson.name,
         label: packageJson.name,
@@ -47,6 +52,14 @@ module.exports = {
       '/logout': {
         target: PROXY_TARGET,
         changeOrigin: true
+      },
+      '^/theme': {
+        target: PROXY_TARGET,
+        keepOrigin: true
+      },
+      '^/@molgenis-ui': {
+        target: PROXY_TARGET,
+        keepOrigin: true
       }
     }
   }
