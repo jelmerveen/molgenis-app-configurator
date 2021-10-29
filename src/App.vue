@@ -26,7 +26,8 @@ export default {
     }
   },
   watch: {
-    selectedAppId () {
+    async selectedAppId () {
+      await this.fetchData()
       const appConfig = this.appsList.find(
         (app) => app.id === this.selectedAppId
       ).appConfig
@@ -52,13 +53,16 @@ export default {
       })
       document.getElementById('message').innerText =
         result.status < 400 ? 'Success!' : 'Failed to save'
+    },
+    async fetchData () {
+      const results = await fetch('/api/data/sys_App')
+      const rows = await results.json()
+
+      this.appsList = rows.items.map((item) => item.data)
     }
   },
   async beforeMount () {
-    const results = await fetch('/api/data/sys_App')
-    const rows = await results.json()
-
-    this.appsList = rows.items.map((item) => item.data)
+    await this.fetchData()
     this.selectedAppId = this.appsList[0].id
   },
   mounted () {
