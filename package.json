@@ -1,6 +1,6 @@
 {
   "name": "molgenis-app-configurator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Jelmer Veen <https://github.com/jelmerveen>",
   "description": "Simple app to configure Molgenis Apps",
   "private": true,

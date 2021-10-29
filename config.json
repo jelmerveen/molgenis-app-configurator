@@ -1,9 +1,0 @@
-{
-    "name": "app-configurator",
-    "label": "Molgenis app configurator",
-    "description": "Application to easily edit App configuration files",
-    "version": "1.0.0",
-    "apiDependency": "v2",
-    "includeMenuAndFooter": true,
-    "runtimeOptions": {}
-}
