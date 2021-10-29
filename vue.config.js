@@ -2,6 +2,7 @@ const ZipPlugin = require('zip-webpack-plugin')
 const packageJson = require('./package.json')
 const GenerateJsonWebpackPlugin = require('generate-json-webpack-plugin')
 const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const pkgVersion = packageJson.version
 const pkgName = packageJson.name
@@ -20,6 +21,9 @@ module.exports = {
   configureWebpack: config => {
     config.plugins.push(
       new MonacoEditorPlugin({
+        publicPath: process.env.NODE_ENV === 'production'
+          ? '/plugin/app/' + pkgName + '/js/' // we need to change this path for webworkers to work on molgenis app
+          : '/',
         languages: ['json']
       }),
       new GenerateJsonWebpackPlugin('config.json', {
@@ -31,6 +35,11 @@ module.exports = {
         includeMenuAndFooter: true,
         runtimeOptions: {}
       }, null, 4),
+      new CopyPlugin({
+        patterns: [
+          { from: 'js/*.js' } // this is a hack, because we can't load js files from the home dir as app
+        ]
+      }),
       new ZipPlugin({
         filename: `${pkgName}.v${pkgVersion}`
       })

@@ -38,7 +38,6 @@ export default {
       this.editor.getAction('editor.action.formatDocument').run()
     },
     async save () {
-      this.format()
       const appConfig = this.editor.getValue()
 
       const result = await fetch(`/api/data/sys_App/${this.selectedAppId}`, {
